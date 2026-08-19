@@ -34,6 +34,7 @@ In the current vendor U-Boot, once the SPL is downloaded and starts running, it'
 server again on the same Type-C port. It's intended for flashing and recover a bricked device, but we can make use of this feature to
 conveniently upload the rest blobs, including OpenSBI, u-boot proper, and optionally the `esos` binaries for the RT cores for power management.
 There're several things we need to hack on top of the vendor u-boot:
+ * We need to package all binary blobs into the u-boot.itb and fastboot on that, as we are not loading them from EMMC/SPI/UFS.
 
 ```
 sys: 0x10001200
