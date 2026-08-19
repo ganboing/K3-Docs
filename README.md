@@ -5,7 +5,7 @@
 ## What is K3?
 K3 stands for the RISC-V based K3 SoC from SpacemiT [overview](https://www.spacemit.com/community/document/info?lang=en&nodepath=hardware/key_stone/k3/k3_docs/root_overview.md)
 It's a successor to their K1 SoC featuring 4 CPU clusters, including 2 X100 clusters (4 cores each), and 2 A100 clusters (4 cores each) -- 16 CPUs in total.
-The X100 is intended for general purpose compute (H extension + 256 vlen) and A100 for "AI" (no H extension, 1024 vlen)
+The X100 is intended for general purpose compute (H extension + 256 vlen) and A100 for "AI" (no H extension, 1024 vlen). More details in [paper](./soc/k3.pdf)
 
 | K3 in CoM260 | K3 Block Diagram |
 | ------------ | ---------------- |
