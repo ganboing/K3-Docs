@@ -75,7 +75,7 @@ make PLATFORM=generic PLATFORM_DEFCONFIG=k3_defconfig
 
 ### u-boot
 ```shell
-git clone https://github.com/ganboing/uboot-k3 uboot-k3
+git clone https://github.com/ganboing/u-boot-k3 uboot-k3
 cd uboot-k3
 ln -snr <opensbi-k3>/platform/generic/firmware/fw_dynamic.bin board/spacemit/k3/
 make k3_defconfig all
