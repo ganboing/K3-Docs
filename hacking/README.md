@@ -13,28 +13,53 @@ K3 supports the following boot modes:
 |    1    |    1    |    X    |    X    | UART Download (xmodem) |
 
 Upon power-on, only hart 0 starts running the masked ROM, and others are halted. The ROM code is responsible for detecting boot modes, 
-and loads (and verify) a binary blob from the boot source. The binary blob must be properly signed/encapsulated for the masked ROM to 
-validate and load it into the SRAM (DRAM is not initialized at this time). [This tool](https://github.com/spacemit-com/uboot-2022.10/blob/k3-br-v1.0.y/tools/build_binary_file.py) 
-is responsible for creating the proper headers and footers. [This configuration](https://github.com/spacemit-com/uboot-2022.10/blob/k3-br-v1.0.y/board/spacemit/k3/configs/fsbl.json)
-is used for the vendor u-boot SPL blob. The blob will be loaded into `0xc0800000` and the size limit is ***`0x74000`***, most likely
-because the masked ROM has to use the `0xc000` at the top for it's own runtime data and stack. Once the blob is loaded and validated,
-ROM code transfers the control to the blob and off we go. (There's no sign of calling back to ROM code for runtime services).
-In the current vendor firmware, this blob is exactly the u-boot SPL, which is a heavily modified (and surely messy) version that 
-contains DDR init code. After DRAM initialized, SPL continues to load other blobs from EMMC/SPI/UFS partitions.
+and loads (and verify) a binary blob from the boot source, then hands off to execute that blob. The binary blob must be properly
+signed/encapsulated for the masked ROM to validate and load it into the SRAM (DRAM is not initialized at this time). It is often
+referred to as `FSBL.bin` in the vendor sources. Once `FSBL.bin` starts running, the ROM is completely off the hook.
+Details on how ROM finds `FSBL.bin`:
+ * SPI flash: A `bootinfo` structure at the beginning describing `FSBL.bin` offset.
+ * EMMC/UFS: GPT partition table and (or) `bootinfo` structure describing `FSBL.bin` offset.
+ * USB Download (fastboot): Can just stage `FSBL.bin` as-is.
+ * UART Download (xmodem): Use xmodem protocol to send `FSBL.bin` (not yet verified). [More info](https://community.milkv.io/t/jupiter-2-bootrom-and-booting-over-uart/3978)
 
-Vendor U-boot is at https://github.com/spacemit-com/uboot-2022.10/tree/k3-br-v1.0.y
+---
 
-As firmware/bootloader hackers, we are interested in a workflow that can easily boot a given firmware blob without re-flashing.
-To achieve this, we leave the boot mode to `USB Download`. (You may also use the UART download mode if your particular board doesn't
-have debug Type-C, but I imagine it'll be quite slow. Ref: https://community.milkv.io/t/jupiter-2-bootrom-and-booting-over-uart/3978)
-In this mode, the masked ROM will start a fastboot server on the debug type-C port and waiting for accepting for downloading the
-same binary format mentioned earlier. This is ideal for debugging and CI automation.
+## FSBL.bin
+`FSBL.bin` starts running in SRAM (`0xc0800000`). Single core, M-mode, DDR uninitialized. In the current vendor implementation,
+`FSBL.bin` is really just u-boot SPL, with lots of messy vendor patches: [source code](https://github.com/spacemit-com/uboot-2022.10/tree/k3-br-v1.0.y)
 
-In the current vendor U-Boot, once the SPL is downloaded and starts running, it'll reset the debug Type-C port and start a fastboot
-server again on the same Type-C port. It's intended for flashing and recover a bricked device, but we can make use of this feature to
-conveniently upload the rest blobs, including OpenSBI, u-boot proper, and optionally the `esos` binaries for the RT cores for power management.
-There're several things we need to hack on top of the vendor u-boot:
- * We need to package all binary blobs into the u-boot.itb and fastboot on that, as we are not loading them from EMMC/SPI/UFS.
+Its jobs are:
+ * Clock/pmic/pinctrl/... basic platform init
+ * Gather board types, product name, DDR die info/types(ddr4/5), from EEPROM.
+ * DDR Training.
+ * If Boot modes: loads following into DRAM, and boot OpenSBI:
+   * OpenSBI
+   * bootloader (uboot or edk2)
+   * optionally "esos" for 2 RT24 RV32 cores (power management)
+ * If Download modes: start a fastboot server on the same type-C debug port
+   * waits forever until a `fastboot continue` is received.
+   * Unpack the received fit image and boot accordingly.
+
+## OpenSBI
+OpenSBI starts running in DRAM (`0x100000000`). Single core, M-mode.
+ * Initialize cache coherency manager
+ * Kick start all other harts (hartid != 0)
+ * Handoff to u-boot proper or edk2, depending on what's being loaded by u-boot SPL.
+
+## U-boot proper / edk2
+Normal/regular bootflow from here on.
+
+---
+
+## Lesson learned so far
+ * From u-boot-spl.bin or any binary to `FSBL.bin`, you need [This tool](https://github.com/spacemit-com/uboot-2022.10/blob/k3-br-v1.0.y/tools/build_binary_file.py).
+Sample config file for u-boot-spl: [fsbl.json](https://github.com/spacemit-com/uboot-2022.10/blob/k3-br-v1.0.y/board/spacemit/k3/configs/fsbl.json).
+ * `FSBL.bin` limit for `fastboot` (or perhaps all other boot modes) is ***`0x74000`***, most likely because the masked ROM
+has to use the `0xc000` at the top for it's own runtime data and stack.
+ * The `u-boot.itb` can be used directly for fastboot'ing the next stage after `FSBL.bin`, but it's really hacky:
+   * No OpenSBI, forcing the u-boot proper to be running in M-mode. Impossible to even boot Linux.
+   * No "esos", disabling power-management functions and may impact features in Linux.
+
 
 ```
 sys: 0x10001200
