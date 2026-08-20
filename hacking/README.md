@@ -65,6 +65,7 @@ has to use the `0xc000` at the top for it's own runtime data and stack.
 ---
 
 ## Building u-boot/OpenSBI
+To address these aforementioned issues, I hacked their u-boot source. You'll need to use my source to build u-boot
 
 ### OpenSBI
 ```shell
