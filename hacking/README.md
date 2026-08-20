@@ -162,19 +162,7 @@ fastboot continue
 
 On the debug console:
 ```
-_rproc_ops_wrapper: Starting rcpu0...
-_rproc_ops_wrapper: Starting rcpu1...
-Invalid OS Type: esos
-No reserved memory region found in source FDT
-unknown boot device: 13
-load failed: uboot=-1 esos=-1
-Invalid OS Type: esos
-Invalid OS Type: esos
-Invalid OS Type: esos
-Invalid OS Type: esos
-Invalid OS Type: esos
-Can't get 'entry' property from FIT 0x10217c2a0, node: offset 928, name uboot (FDT_ERR_NOTFOUND)
-WARNING: riscv,rpmi-hsm driver is experimental and may change
+......WARNING: riscv,rpmi-hsm driver is experimental and may change
 WARNING: riscv,rpmi-shmem-mbox driver is experimental and may change
 WARNING: riscv,rpmi-system-reset driver is experimental and may change
 WARNING: riscv,rpmi-system-suspend driver is experimental and may change
@@ -237,7 +225,7 @@ Domain0 Region11            : 0x0000000100400000-0x00000001005fffff M: () S/U: (
 Domain0 Region12            : 0x0000000100800000-0x0000000100bfffff M: () S/U: ()
 Domain0 Region13            : 0x0000000000000000-0xffffffffffffffff M: () S/U: (R,W,X)
 Domain0 Next Address        : 0x0000000102000000
-Domain0 Next Arg1           : 0x000000010217c2a0
+Domain0 Next Arg1           : 0x0000000102151948
 Domain0 Next Mode           : S-mode
 Domain0 SysReset            : yes
 Domain0 SysSuspend          : yes
@@ -254,9 +242,104 @@ Boot HART MHPM Info         : 16 (0x0007fff8)
 Boot HART Debug Triggers    : 4 triggers
 Boot HART MIDELEG           : 0x0000000000003666
 Boot HART MEDELEG           : 0x0000000000f0b509
-[  12.523] initcall: 00000001020d0f54
-[  12.523] 
+[  41.562] 
 
-U-Boot 2022.10-dirty (Aug 19 2026 - 00:42:43 -0700)
+U-Boot 2022.10-00009-g14cb4fd87f-dirty (Aug 19 2026 - 20:49:07 -0700)
+
+[  41.566] CPU:   rv64imafdcvh
+[  41.569] Model: spacemit k3 com260 ifx board
+[  41.573] DRAM:  8 GiB
+[  41.586] reset driver probe finish
+[  41.676] eSPI not ready, skipping EC probe
+[  41.680] Core:  629 devices, 33 uclasses, devicetree: board
+[  41.684] WDT:   Started watchdog@d4014000 with servicing (60s timeout)
+[  41.689] MMC:   spacemit_sdhci sdh@d4280000: probe done.
+[  41.695] sdh@d4280000: 0
+[  41.697] Loading Environment from mtdENV... Could not find a valid device for d420c000.spi
+[  41.705] Cannot find any MTD device
+[  41.709] MTD device not initialized
+[  41.712] Cannot support showing bootlogo in this boot mode!
+[  41.718] Unsupported boot mode for splash screen
+[  41.722] initialize_console_log_buffer
+[  41.726] Have allocated memory for console log buffer
+[  41.731] In:    serial
+[  41.733] Out:   serial
+[  41.735] Err:   serial
+[  41.739] CTF2301: Start probing ctf2301@4c
+[  41.745] Found device 'mipi@d421a800', disp_uc_priv=00000002fbe9b5b0
+[  41.748] spacemit_panel_of_to_plat panel lcd_tc358762xbg_dpi_800x480 
+[  41.766] pll_ctrl_reg0 = 0x3A155555
+[  41.767] pll_ctrl_reg1 = 0x4582820B
+[  41.770] Panel is lcd_tc358762xbg_dpi
+[  41.775] fb=2fe000000, size=800x480
+[  41.779] dpi_panel_probe: Warning: cannot get enable GPIO: ret=-2
+[  41.894] dpi_panel_probe: Atmel I2C read failed: 0
+[  41.896] panel device error -1
+[  41.900] Found device 'dp1@cac88000', disp_uc_priv=00000002fbe9b4f0
+[  42.059] dp cannot get HPD signal
+[  42.059] spacemit_display_init: device 'dpu@c0340000' display won't probe (ret=-1)
+[  42.221] dp cannot get HPD signal
+[  42.221] display devices not found or not probed yet: -1
+[  42.287] Found 2 valid MAC addresses.
+[  42.287] TLV item: product_name = k3_com260_ifx
+[  42.292] TLV item: serial# = COM3K3081280372
+[  42.296] TLV item: ddr_partnumber = MT62F1G32D2DS
+[  42.302] spacemit reboot: read PMIC reg 0xab value 0xf0
+[  42.307] No USB maximum speed specified. Using super speed
+[  42.312] k3-usb3-phy phy@0cad30000: k3 usb3 phy enter...
+[  42.321] mv_usb_phy phy@cad20000: k1x-ci-usb-phy-probe: Enter...
+[  42.324] k3-usb3-phy phy@0cad30000: PUPHY Rx Reg Configured
+[  42.330] k3-usb3-phy phy@0cad30000: PHY version: 0x302 init as USB3 mode
+[  42.336] k3-usb3-phy phy@0cad30000: PUPHY Rx Reg Configured
+[  42.342] k3-usb3-phy phy@0cad30000: PHY version: 0x302 init as USB3 mode
+[  42.348] dwc3-generic-peripheral dwc3@cad00000: this is a DesignWare USB3 DRD Core
+[  42.557] fusb301 tcpc@25: Device ID = 0x12
+[  42.572] fusb301 tcpc@25: fusb301 set pwr_mode: 1.5A
+[  42.576] fusb301 tcpc@25: fusb301 set toggle time: Toggle_35ms
+[  42.581] fusb301 tcpc@25: fusb301 set mode: Drp_Acc
+[  42.586] fusb301 tcpc@25: fusb301 set state: Error_Recovery
+[  42.592] fusb301 tcpc@25: mode[0x20], host_cur[0x02], dttime[0x00]
+[  42.597] fusb301 tcpc@25: failed to read status
+[  42.600] fusb301 tcpc@25: failed to reset device, ret: 8
+[  42.606] find switch: phy@0cad30000
+[  42.609] k3-usb3-phy phy@0cad30000: Override orientation with 0
+[  42.614] fusb301 tcpc@25: TCPM: set voltage limit = 0 mV
+[  42.620] fusb301 tcpc@25: TCPM: set current limit = 0 mA
+[  42.625] k3-usb3-phy phy@0cad30000: Override orientation with 0
+[  42.632] fusb301 tcpc@25: get vbus: On
+[  42.636] fusb301 tcpc@25: fusb301 set pwr_mode: none
+[  42.641] fusb301 tcpc@25: fusb301 set mode: Drp_Acc
+[  42.646] fusb301 tcpc@25: get orientation: 0
+[  42.648] fusb301 tcpc@25: get cc1 = open, cc2 = open
+[  42.653] fusb301 tcpc@25: TCPM: init finished
+[  42.660] fusb301 tcpc@25: vbus=On
+[  42.662] fusb301 tcpc@25: get vbus: On
+[  42.711] fusb301 tcpc@25: IRQ: ATTACH detected
+[  42.716] fusb301 tcpc@25: get orientation: 1
+[  42.717] fusb301 tcpc@25: get cc1 = rp-def, cc2 = open
+[  42.923] k3-usb3-phy phy@0cad30000: Override orientation with 0
+[  42.926] fusb301 tcpc@25: TCPM: CC connected in CC1 as UFP
+[  42.931] fusb301 tcpc@25: TCPM: set voltage limit = 5000 mV
+[  42.937] fusb301 tcpc@25: TCPM: set current limit = 0 mA
+[  43.971] fusb301 tcpc@25: TCPM: set voltage limit = 5000 mV
+[  43.973] fusb301 tcpc@25: TCPM: set current limit = 0 mA
+[  44.520] dwc3-generic-peripheral dwc3@cad00000: Connection Speed: high-speed
+[  44.582] handle setup GET_DESCRIPTOR, 0x80, 0x6 index 0x0 value 0x100 length 0x40
+[  44.602] dwc3-generic-peripheral dwc3@cad00000: Connection Speed: high-speed
+[  44.663] handle setup SET_ADDRESS, 0x0, 0x5 index 0x0 value 0x6 length 0x0
+[  44.679] handle setup GET_DESCRIPTOR, 0x80, 0x6 index 0x0 value 0x100 length 0x12
+[  44.684] handle setup GET_DESCRIPTOR, 0x80, 0x6 index 0x0 value 0x200 length 0x9
+[  44.691] handle setup GET_DESCRIPTOR, 0x80, 0x6 index 0x0 value 0x200 length 0x20
+[  44.699] handle setup GET_DESCRIPTOR, 0x80, 0x6 index 0x0 value 0x300 length 0xff
+[  44.706] handle setup GET_DESCRIPTOR, 0x80, 0x6 index 0x409 value 0x302 length 0xff
+[  44.714] handle setup GET_DESCRIPTOR, 0x80, 0x6 index 0x409 value 0x301 length 0xff
+[  44.721] handle setup GET_DESCRIPTOR, 0x80, 0x6 index 0x409 value 0x303 length 0xff
+[  44.730] handle setup SET_CONFIGURATION, 0x0, 0x9 index 0x0 value 0x1 length 0x0
+[  44.736] handle setup GET_DESCRIPTOR, 0x80, 0x6 index 0x409 value 0x302 length 0xff
+[  44.744] handle setup GET_DESCRIPTOR, 0x80, 0x6 index 0x409 value 0x304 length 0xff
+[  49.181] TLV item: product_name = k3_com260_ifx
+[  49.182] TLV item: serial# = COM3K3081280372
+[  49.187] TLV item: ddr_partnumber = MT62F1G32D2DS
+[  49.192] SRAM cleared: addr=0xc0800000 size=0x80000
 ...
 ```
