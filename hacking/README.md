@@ -26,7 +26,7 @@ Details on how ROM finds `FSBL.bin`:
 
 ## FSBL.bin
 `FSBL.bin` starts running in SRAM (`0xc0800000`). Single core, M-mode, DDR uninitialized. In the current vendor implementation,
-`FSBL.bin` is really just u-boot SPL, with lots of messy vendor patches: [source code](https://github.com/spacemit-com/uboot-2022.10/tree/k3-br-v1.0.y)
+`FSBL.bin` is really just u-boot SPL, with lots of messy vendor patches: [source code](https://github.com/spacemit-com/uboot-2022.10/blob/k3-br-v1.0.y/board/spacemit/k3/spl.c)
 
 Its jobs are:
  * Clock/pmic/pinctrl/... basic platform init
@@ -59,7 +59,34 @@ has to use the `0xc000` at the top for it's own runtime data and stack.
  * The `u-boot.itb` can be used directly for fastboot'ing the next stage after `FSBL.bin`, but it's really hacky:
    * No OpenSBI, forcing the u-boot proper to be running in M-mode. Impossible to even boot Linux.
    * No "esos", disabling power-management functions and may impact features in Linux.
+ * The code quality of vendor u-boot is **bad**. It triggered asserts during my testing. Perhaps that's why spacemit's now shipping edk2 instead?
 
+---
+
+## Building u-boot/OpenSBI/...
+
+### OpenSBI
+```shell
+git clone -b k3-br-v1.0.y https://github.com/spacemit-com/opensbi.git opensbi-k3
+cd opensbi-k3
+make PLATFORM=generic PLATFORM_DEFCONFIG=k3_defconfig
+```
+
+### u-boot
+```shell
+git clone https://github.com/ganboing/uboot-k3 uboot-k3
+cd uboot-k3
+ln -snr <opensbi-k3>/platform/generic/firmware/fw_dynamic.bin board/spacemit/k3/
+make k3_defconfig all
+```
+
+## Combine with esos
+```
+# Download the latest esos.itb
+curl -fL https://archive.spacemit.com/bianbu4/pool/main/e/esos/bianbu-esos_1.0.5_riscv64.deb | dpkg-deb -X - /tmp/esos
+cd <uboot-k3>
+
+```
 
 ```
 sys: 0x10001200
