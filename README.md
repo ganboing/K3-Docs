@@ -15,13 +15,22 @@ Based on my analysis of their [OpenSBI patch v2](https://lore.kernel.org/opensbi
 [rvtrace RFC patch](https://lore.kernel.org/all/20260414034153.3272485-1-liangzhen@linux.spacemit.com/), K3 is similar to K1 in that it's based on some ARM SoC design where SpacemiT just
 replaced the ARM core with RISC-V and reused many of the fabrics, including the cache coherency manager and trace components. It's not build entirely from ground up.
 
+---
+
 ## New!! Hacking guide for firmware developers
 Refer to [README](./hacking/README.md)
 
+---
+
 ## On the Market
 There're essentially 2 boards that regular users can buy:
+
  * [K3 Pico-ITX](https://www.spacemit.com/community/document/info?lang=en&nodepath=hardware/eco/k3_pico/pico_user_guide.md): good for regular use: available with proper case (NUC alike); decent cooling; SFP+ port.
  * [K3 CoM260](https://www.spacemit.com/community/document/info?lang=en&nodepath=hardware/eco/k3_com260/com260_user_guide.md): good for advanced users, debugging: Jetson Orin nano compatible; 12V DC in; JTAG from microSD slot.
+
+---
+
+***If you can't access archive.spacemit.com, [This directory](./spacemit/) has many of the pdfs backed up***
 
 ## SoC Docs
 There's no official TRM being published yet. Only datasheets and design documents [here](https://github.com/spacemit-com/docs-chip/blob/main/en/key_stone/k3/index.md). They are not
@@ -29,6 +38,8 @@ enough to do meaningful firmware/driver development, but still better than nothi
 
 ## Board Docs
 SpacemiT maintains very good documentation of board docs [here](https://github.com/spacemit-com/docs-product/blob/main/en/index.md), including Pico-ITX and CoM260.
+
+---
 
 ## RVV
 Benchmark results from Olaf Bernstein: https://camel-cdr.github.io/rvv-bench-results/
