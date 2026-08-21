@@ -17,6 +17,7 @@ and loads (and verify) a binary blob from the boot source, then hands off to exe
 signed/encapsulated for the masked ROM to validate and load it into the SRAM (DRAM is not initialized at this time). It is often
 referred to as `FSBL.bin` in the vendor sources. Once `FSBL.bin` starts running, the ROM is completely off the hook.
 Details on how ROM finds `FSBL.bin`:
+
  * SPI flash: A `bootinfo` structure at the beginning describing `FSBL.bin` offset.
  * EMMC/UFS: GPT partition table and (or) `bootinfo` structure describing `FSBL.bin` offset.
  * USB Download (fastboot): Can just stage `FSBL.bin` as-is.
@@ -29,6 +30,7 @@ Details on how ROM finds `FSBL.bin`:
 `FSBL.bin` is really just u-boot SPL, with lots of messy vendor patches: [source code](https://github.com/spacemit-com/uboot-2022.10/blob/k3-br-v1.0.y/board/spacemit/k3/spl.c)
 
 Its jobs are:
+
  * Clock/pmic/pinctrl/... basic platform init
  * Gather board types, product name, DDR die info/types(ddr4/5), from EEPROM.
  * DDR Training.
@@ -42,6 +44,7 @@ Its jobs are:
 
 ## OpenSBI
 OpenSBI starts running in DRAM (`0x100000000`). Single core, M-mode.
+
  * Initialize cache coherency manager
  * Kick start all other harts (hartid != 0)
  * Handoff to u-boot proper or edk2, depending on what's being loaded by u-boot SPL.
