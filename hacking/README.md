@@ -2,7 +2,10 @@
 
 <img src="./k3-com260-jtag.png" alt="JTAG on CoM260" width="504" height="378"> 
 
-My JTAG setup with K3/COM260. [pin and connection details](./jtag-com260-ft2232H.md)
+My JTAG setup with K3/COM260
+
+  * [Pin, connection details](./jtag-com260-ft2232H.md)
+  * [OpenOCD and GDB](./openocd-gdb.md)
 
 ## K3 boot flow
 
