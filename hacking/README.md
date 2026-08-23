@@ -1,4 +1,4 @@
-## K3 bootflow
+## K3 boot flow
 
 Based on the [schematics of K3 Pico-ITX](https://cdn-resource.spacemit.com/file/product/K3/k3_pico_hw/SCH-146-V10_K3_DEB1_P1_LP5315B_PDF.pdf),
 K3 supports the following boot modes:
