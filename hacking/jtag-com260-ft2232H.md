@@ -8,6 +8,10 @@
 * [FT2232H Mini Module](https://ftdichip.com/products/ft2232h-mini-module/)
 * [SparkFun MicroSD sniffer](https://www.sparkfun.com/sparkfun-microsd-sniffer.html)
 
+The pins on MicroSD breakout board are actually pressed-fit. I've got near-zero experience with soldering, and without tools, so
+I bought some [press-fit pins](https://www.mouser.com/en/ProductDetail/649-93689-103-02LF), compressed it a bit with pliers, and
+just pressed it in.
+
 ## JTAG Pins
 
 To my best knowledge, CoM260 only has the JTAG pins exposed on the module (core) board, code name SM10. There's no JTAG pins
