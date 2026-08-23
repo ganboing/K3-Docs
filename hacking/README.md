@@ -5,7 +5,7 @@ My JTAG setup with K3/COM260. [pin, connection and openocd details](./jtag-com26
 
 ## K3 boot flow
 
-Based on the [schematics of K3 Pico-ITX](https://cdn-resource.spacemit.com/file/product/K3/k3_pico_hw/SCH-146-V10_K3_DEB1_P1_LP5315B_PDF.pdf),
+Based on the [schematics of K3 Pico-ITX](../spacemit/SCH-146-V10_K3_DEB1_P1_LP5315B_PDF.pdf),
 K3 supports the following boot modes:
 
 | GPIO_69 | GPIO_68 | GPIO_66 | GPIO_65 | Function |
