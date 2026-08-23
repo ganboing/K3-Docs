@@ -50,6 +50,8 @@ Its jobs are:
  * If Download modes: start a fastboot server on the same type-C debug port
    * waits forever until a `fastboot continue` is received.
    * Unpack the received fit image and boot accordingly.
+  
+***For JTAG: Use `k3-1x1.sh`***
 
 ## OpenSBI
 OpenSBI starts running in DRAM (`0x100000000`). Single core, M-mode.
