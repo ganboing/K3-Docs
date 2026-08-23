@@ -73,3 +73,16 @@ usb 3-1.1: SerialNumber: FT80197L
 ```
 
 Once the FT2232H is properly probed, COM260 can be turned off/on at will, and not causing issues with FT2232H.
+
+## OpenOCD adapter config
+```
+# JTAG adapter setup
+adapter driver ftdi
+
+ftdi vid_pid 0x0403 0x6010
+ftdi channel 0
+ftdi layout_init 0x0008 0x000b
+reset_config none
+```
+
+Nothing special. Note the `reset_config none` is deliberate, as we have neither sRST or tRST.
