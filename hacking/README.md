@@ -1,4 +1,4 @@
-# K3 Firmware Hacking
+# K3 Firmware Hacking and JTAG
 
 <img src="./k3-com260-jtag.png" alt="JTAG on CoM260" width="504" height="378"> 
 
