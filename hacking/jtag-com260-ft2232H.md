@@ -48,9 +48,9 @@ VIO: VCCIO  <- VDD_3V3_SYS (PIN 17 of 40-PIN)
 This setup conveniently gives us both the debug UART0 and JTAG through the same USB converter. Note that the VCCIO of
 FT2232H needs to be feed from COM260's 3V3 to avoid FT2232H backfeeding power back when COM260 is powered-off. Otherwise,
 you'll get some random garbage characters in the UART console when COM260 is turned off. The backfeeding can also confuse
-the PMIC or something in the board, that K3 has some possibility to not turning on when 12V is re-connected.
+the PMIC or something on the board, that K3 has some possibility to not turning on when 12V is re-connected.
 
-This however, caused another issue. When the FT2232H is first connected without COM260 power-on, there's no VCCIO, and for
+This however, creates another challenge. When the FT2232H is first connected without COM260 power-on, there's no VCCIO, and for
 some reason the FT2232H mistakenly reports itself as a Quad RS232-HS:
 ```
 usb 3-1.2: new high-speed USB device number 9 using xhci_hcd
@@ -71,3 +71,5 @@ usb 3-1.1: Product: FT2232H MiniModule
 usb 3-1.1: Manufacturer: FTDI
 usb 3-1.1: SerialNumber: FT80197L
 ```
+
+Once the FT2232H is properly probed, COM260 can be turned off/on at will, and not causing issues with FT2232H.
