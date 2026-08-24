@@ -14,11 +14,15 @@ just pressed it in.
 
 ## JTAG Pins
 
-To my best knowledge, CoM260 only has the JTAG pins exposed on the module (core) board, code name SM10. There's no JTAG pins
-on the base board. From K3 chip pinouts, JTAG can be either connected to JTAG pins in the PMIC pin group, or the MMC1 pins.
-The MMC1 pins is perhaps the only viable way if we don't want to hack the board and solder wires. The reason we can use MMC1 pins
-for JTAG is because they are multiplexed into multiple functions. (Every pin on K3 is multiplexed up to 8 predefined functions)
-Function 5 of MMC1 pins are:
+K3 exposes JTAG pins through both the dedicated JTAG pins and MMC1 pins, but AFAIK, the CoM260 core board SM10 only has MMC1 pins
+connected, and only through the MMC1 sdcard slot. For Pico-ITX, it does have the JTAG pins exposed, but it's hidden under the fan,
+and you need to [solder the wires](https://forum.spacemit.com/t/topic/1345/2?u=1783079046) (or perhaps use Pogo pins?).
+To me, the CoM260 is workable, and I don't want to risk destroying my board.
+
+By default MMC1 pins are multiplexed to MMC1 functions (function 0) at poweron. To use JTAG, they must be switched to function 5:
+
+<img src="./pinmux_MMC1.png" width="986" height="138">
+
 | Pin | Function 5 |
 | --- | ---------- |
 |MMC1_DAT3|PRI_TDI|
@@ -28,10 +32,11 @@ Function 5 of MMC1 pins are:
 
 ***Note that no TRST is exposed through MMC1 pins***
 
-The multiplexing of pins are controlled by pinctrl block at `0xd401e000`. Each pin has a corresponding 32-bit [pinctrl register](https://elixir.bootlin.com/linux/v7.2/source/Documentation/devicetree/bindings/pinctrl/spacemit,k1-pinctrl.yaml), in which there
-is a 3-bit field controlling the function (0-7) that the pin connects to. At reset, the default function is 0 for MMC1 pins, so
-they need to be switched to Function 5. Vendor u-boot has a convenient device-tree property [`spacemit,enable-debug-jtag`](https://github.com/spacemit-com/uboot-2022.10/blob/769ed686043d06b65c2863af479e97985e3b0d64/arch/riscv/dts/k3_spl.dts#L28) that
-controls the switch in SPL. Un-comment that line, and don't forget to disable mmc1(sdhci1) in u-boot proper and Linux device-tree
+To perform the switching, write to the corresponding pinctrl register of the pins. The pinctrl block is at `0xd401e000`.
+Each pin has a corresponding 32-bit [pinctrl register](https://elixir.bootlin.com/linux/v7.2/source/Documentation/devicetree/bindings/pinctrl/spacemit,k1-pinctrl.yaml), in which there
+is a 3-bit field controlling the function (0-7) that the pin connects to. 
+Vendor u-boot has a convenient device-tree property [`spacemit,enable-debug-jtag`](https://github.com/spacemit-com/uboot-2022.10/blob/769ed686043d06b65c2863af479e97985e3b0d64/arch/riscv/dts/k3_spl.dts#L28) that
+switches MMC1 functions in SPL. Un-comment that line, and don't forget to disable mmc1(sdhci1) in u-boot proper and Linux device-tree
 so the pinmux won't get switched back.
 
 ## JTAG Connection
