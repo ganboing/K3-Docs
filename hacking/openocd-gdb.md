@@ -48,6 +48,7 @@ ADAPTER_DRIVER=jlink
 There are several things going on here:
 
  * `bindto`, `gdb port`, `telnet port`: I actually deleted these options, and let OpenOCD use the default ports, 3333 for gdb, 4444 for telnet
+ * `TARGET`: Either `acpu` (the 16 cores main CPU) or `rcpu` (the 2 cores RCPU). The SoC has both CPU/RCPU JTAG connected to the same TAP, and another TAP (irlen 9) implements register 0x98 controlling the switch [ref](https://www.spacemit.com/community/document/info?lang=en&nodepath=hardware/key_stone/k3/k3_docs/k3_usermanual/16_peripherals/jtag.md). `spacemit-k3.cfg` is responsible for setting the correct value to register 0x98 of this TAP, and then connects to the CPU/RCPU TAP.
  * `ADAPTER_DRIVER=jlink`: Change it to your adapter config, such as the [FTDI config](https://github.com/ganboing/K3-Docs/blob/master/hacking/jtag-com260-ft2232H.md#openocd-adapter-config) for my CoM260 setup, and copy the file into  ../share/openocd/scripts/interface.
  * `SPEED 8000`: The adapter speed that gets set to via `adapter speed <SPEED>`. No need to change unless the session is too slow for you
  * `CLUSTERS`, `CLUSTERx_COREIDS` are the cores OpenOCD connects to. ***Don't specify the ones that's power-gated, otherwise it'll hang the OpenOCD session***. Use the corresponding scripts, which conveniently defined these values for you:
