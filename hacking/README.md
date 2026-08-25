@@ -7,6 +7,8 @@ My JTAG setup with K3/COM260:
   * [Pin, connection details](./jtag-com260-ft2232H.md)
   * [OpenOCD and GDB](./openocd-gdb.md)
 
+***To prevent overheating, start the fan as early as possible (my u-boot does that!), or use an external fan***
+
 ## K3 boot flow
 
 Based on the [schematics of K3 Pico-ITX](../spacemit/SCH-146-V10_K3_DEB1_P1_LP5315B_PDF.pdf),
